@@ -8,8 +8,8 @@ public class BotResources {
             "Have you come across a new competitor? Type in /add\n" +
             "Use /{{contact's email adress}} to fetch everything related to the person you are meeting in your upcoming pitch";
 
-    public static final String COMPETITOR_NOT_FOUND = "";
+    public static final String COMPETITOR_NOT_FOUND = "Oh I am sorry, it looks like I could not find what you are looking for \uD83D\uDE1FUse /list to get a list of all our documented competitors or use this Google form to add an insight about a new one: https://docs.google.com/forms/d/e/1FAIpQLSfMV6oPfRD2Zy24raRA-VlgRileQUcbIzW29OTSNlsF8sGLMA/viewform";
 
-
+    public static final String COMPTETITOR_FOUND_INTRO = "Uuugh - good one! Here is what I could find:";
 
 }
