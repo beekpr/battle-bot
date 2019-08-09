@@ -62,8 +62,11 @@ public class BattleBot extends ChatBot {
             System.out.println("Battlebot Ready");
             values.forEach(
                     row -> {
-                        Competitor competitor = competitorByName.getOrDefault(row.get(0), new Competitor());
-
+                        Competitor competitor = competitorByName.getOrDefault(
+                                row.get(0),
+                                Competitor.builder().build()
+                                );
+                        competitorByName.putIfAbsent(competitor.getName(), competitor);
                         printRow(row);
                     }
             );

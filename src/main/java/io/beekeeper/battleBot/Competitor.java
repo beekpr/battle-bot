@@ -17,4 +17,6 @@ public class Competitor {
     private final String Description;
 
     private final String winRate;
+
+    private final List<String> urls;
 }
