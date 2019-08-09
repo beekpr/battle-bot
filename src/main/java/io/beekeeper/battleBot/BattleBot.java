@@ -20,12 +20,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static io.beekeeper.battleBot.BotResources.COMPETITOR_NOT_FOUND;
@@ -169,7 +172,8 @@ public class BattleBot extends ChatBot {
 
     private void sendBattleGif(int conversationId) {
         try {
-            File file = new File(String.format("%s/src/main/resources/gifs/bring_it.gif", System.getProperty("user.dir")));
+            String randomBattleUrl = getRandomBattleUrl();
+            File file = new File(randomBattleUrl);
             InputStream targetStream = Files.asByteSource(file).openStream();
             FileAttachment battleGif = getSdk()
                     .getFiles()
@@ -180,6 +184,13 @@ public class BattleBot extends ChatBot {
             e.printStackTrace();
         }
 
+    }
+
+    private String getRandomBattleUrl() {
+        File f = new File(String.format("%s/src/main/resources/gifs/", System.getProperty("user.dir")));
+        List<String> gifs = Arrays.asList(Objects.requireNonNull(f.list()));
+        String gif = gifs.get(new Random().nextInt(gifs.size() -1));
+        return String.format("%s/src/main/resources/gifs/%s", System.getProperty("user.dir"), gif);
     }
 
     /**
