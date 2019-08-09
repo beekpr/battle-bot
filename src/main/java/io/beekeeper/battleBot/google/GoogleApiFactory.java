@@ -44,7 +44,7 @@ public class GoogleApiFactory {
      * @throws IOException
      */
     public Sheets getSheetsService() {
-        Credential credential = authorize(Arrays.asList(SheetsScopes.DRIVE_FILE));
+        Credential credential = authorize(Arrays.asList(SheetsScopes.SPREADSHEETS));
         return new Sheets.Builder(Utils.getDefaultTransport(), Utils.getDefaultJsonFactory(), credential)
             .setApplicationName(applicationName).build();
     }

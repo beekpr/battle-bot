@@ -18,7 +18,7 @@ public class BattleBot extends ChatBot {
     private final DeveloperMetadataHelper metaData;
     private final BeekeeperApi api;
     private final String battleSheetId;
-    private final String SHEET_RANGE = "Competitors!A2:E";
+    private final String SHEET_RANGE = "Competitors!A2:E50";
 
     public BattleBot(
             BeekeeperApi api,
