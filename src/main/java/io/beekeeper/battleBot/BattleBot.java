@@ -147,45 +147,4 @@ public class BattleBot extends ChatBot {
         }
 
     }
-
-
-    private static class EventHandler implements Consumer<Event> {
-
-        private final ExecutorService pool = Executors.newFixedThreadPool(6);
-        private final BeekeeperApi api;
-        private final SurveySpreadsheets survey;
-
-        public EventHandler(BeekeeperApi api, GoogleApiFactory googleApiFactory) {
-            super();
-            this.api = api;
-            this.survey = new SurveySpreadsheets(
-                    googleApiFactory.getDriveService(),
-                    googleApiFactory.getSheetsService(),
-                    new DeveloperMetadataHelper(googleApiFactory.getSheetsService())
-            );
-        }
-
-        @Override
-        public void accept(Event event) {
-            try {
-                System.out.println("Processing new event " + event.getSummary());
-
-                Spreadsheet spreadsheet = survey.getSpreadSheetFor(event);
-                Integer sheet = survey.getSheetFor(spreadsheet, event);
-                List<Survey> surveys = survey.createSurveys(spreadsheet, sheet, event);
-
-                event.getRecurringEventId();
-                surveys
-                        .stream()
-                        .map(survey -> new SurveySender(api, survey))
-                        .forEach(pool::submit);
-
-            } catch (IOException e) {
-                System.err.println("Failed to start the feedback gathering process for event " + event.getId());
-                e.printStackTrace();
-            } catch (AlreadyHandledException e) {
-                System.err.println("This event was already handled " + event.getId());
-            }
-        }
-    }
 }
