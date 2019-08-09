@@ -1,0 +1,12 @@
+version: '2.2'
+
+services:
+  battle-bot:
+    restart: always
+    mem_limit: 512m
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - dev.stack.static.env
+
