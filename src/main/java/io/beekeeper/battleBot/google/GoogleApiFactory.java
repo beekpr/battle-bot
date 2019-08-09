@@ -37,7 +37,6 @@ public class GoogleApiFactory {
         }
     }
 
-
     /**
      * Build and return an authorized Sheets client service.
      *
