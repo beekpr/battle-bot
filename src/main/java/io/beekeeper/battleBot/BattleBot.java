@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import io.beekeeper.battleBot.google.GoogleApiFactory;
-import io.beekeeper.battleBot.sheets.v1.DeveloperMetadataHelper;
 import io.beekeeper.core.BeekeeperApi;
 import io.beekeeper.sdk.BeekeeperSDK;
 import io.beekeeper.sdk.ChatBot;
@@ -22,7 +21,6 @@ import java.util.Map;
 public class BattleBot extends ChatBot {
 
     private final Sheets sheetsService;
-    private final DeveloperMetadataHelper metaData;
     private final BeekeeperApi api;
     private final BeekeeperSDK sdk;
     private final String battleSheetId;
@@ -39,7 +37,6 @@ public class BattleBot extends ChatBot {
         this.api = api;
         this.sdk = sdk;
         this.sheetsService = googleApiFactory.getSheetsService();
-        this.metaData = new DeveloperMetadataHelper(sheetsService);
         this.battleSheetId = sheetId;
         loadSheet();
     }
