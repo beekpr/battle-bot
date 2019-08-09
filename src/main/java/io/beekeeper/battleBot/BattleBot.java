@@ -27,8 +27,14 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import static io.beekeeper.battleBot.BotResources.COMPETITOR_NOT_FOUND;
+import static io.beekeeper.battleBot.BotResources.ANOTHER_COMMAND_PROMPT;
 import static io.beekeeper.battleBot.BotResources.COMPETITOR_FOUND_INTROS;
+import static io.beekeeper.battleBot.BotResources.COMPETITOR_NOT_FOUND;
+import static io.beekeeper.battleBot.BotResources.NO_FOLLOW_UPS;
+import static io.beekeeper.battleBot.BotResources.PROMPT_FOR_ANOTHER_COMMAND;
+import static io.beekeeper.battleBot.BotResources.THIS_WAS_NOT_USEFUL;
+import static io.beekeeper.battleBot.BotResources.THIS_WAS_USEFUL_ANSWER;
+import static io.beekeeper.battleBot.BotResources.WAS_THIS_USEFUL;
 
 public class BattleBot extends ChatBot {
 
@@ -38,6 +44,9 @@ public class BattleBot extends ChatBot {
     private final String battleSheetId;
     private final String COMPETITOR_SHEET_RANGE = "Competitors!A2:E";
     private Collection<Competitor> competitorData = new ArrayList<>();
+
+    private boolean lastMessageWasAnotherCommandPrompt = false;
+    private boolean lastMessageWasQuestionIfBotIsUseful = false;
 
     public BattleBot(
             BeekeeperApi api,
@@ -119,12 +128,41 @@ public class BattleBot extends ChatBot {
         }
     }
 
+
     private void processMessage(ConversationMessage message) throws BeekeeperException {
         int conversationId = message.getConversationId();
         String input = message.getText();
         String replyMessage;
 
-        // Ignore if not a command
+        // TODO: Fix this so it is not ugly
+        if (input.toLowerCase().equals("yes")) {
+            if (lastMessageWasAnotherCommandPrompt) {
+                // User answered YES to "Anything else I can help you with?"
+                sendChatMessage(conversationId, ANOTHER_COMMAND_PROMPT);
+                lastMessageWasAnotherCommandPrompt = true;
+                return;
+            } else if (lastMessageWasQuestionIfBotIsUseful) {
+                // User answered YES to "Was this helpful to you?"
+                sendChatMessage(conversationId, THIS_WAS_USEFUL_ANSWER);
+                return;
+            }
+        } else if (input.toLowerCase().equals("no")) {
+            if (lastMessageWasAnotherCommandPrompt) {
+                // User answered NO to "Anything else I can help you with?"
+                // Ask the user if he was happy with the bot
+                sendChatMessage(conversationId, WAS_THIS_USEFUL);
+                lastMessageWasQuestionIfBotIsUseful = true;
+                lastMessageWasAnotherCommandPrompt = false;
+                return;
+            } else if (lastMessageWasQuestionIfBotIsUseful) {
+                // User answered NO to "Was this useful?"
+                sendChatMessage(conversationId, THIS_WAS_NOT_USEFUL);
+                lastMessageWasAnotherCommandPrompt = false;
+                return;
+            }
+        }
+
+        // Ignore if not a command and not an answer to a previous question
         if (!input.startsWith("/")) {
             sendChatMessage(conversationId, BotResources.INTRO);
             sendBattleGif(conversationId);
@@ -156,11 +194,15 @@ public class BattleBot extends ChatBot {
                 replyMessage = COMPETITOR_NOT_FOUND;
             }
         } else {
-            // TODO: List commands
             replyMessage = "Unknown command";
         }
 
+        // Reply to the user's input
         sendChatMessage(conversationId, replyMessage);
+
+        // Send follow up message
+        sendChatMessage(conversationId, PROMPT_FOR_ANOTHER_COMMAND);
+        lastMessageWasAnotherCommandPrompt = true;
     }
 
     private String getRandomString(List<String> input) {
@@ -186,7 +228,7 @@ public class BattleBot extends ChatBot {
     private String getRandomBattleUrl() {
         File f = new File(String.format("%s/src/main/resources/gifs/", System.getProperty("user.dir")));
         List<String> gifs = Arrays.asList(Objects.requireNonNull(f.list()));
-        String gif = gifs.get(new Random().nextInt(gifs.size() -1));
+        String gif = gifs.get(new Random().nextInt(gifs.size() - 1));
         return String.format("%s/src/main/resources/gifs/%s", System.getProperty("user.dir"), gif);
     }
 
