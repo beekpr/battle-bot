@@ -1,7 +1,5 @@
 package io.beekeeper.battleBot;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import com.google.common.io.Files;
@@ -26,12 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import static io.beekeeper.battleBot.BotResources.COMPETITOR_NOT_FOUND;
-import static io.beekeeper.battleBot.BotResources.COMPTETITOR_FOUND_INTRO;
+import static io.beekeeper.battleBot.BotResources.COMPETITOR_FOUND_INTROS;
 
 public class BattleBot extends ChatBot {
 
@@ -157,7 +154,7 @@ public class BattleBot extends ChatBot {
             if (competitor.isPresent()) {
                 Competitor comp = competitor.get();
                 replyMessage =
-                        COMPTETITOR_FOUND_INTRO + "\n" +
+                        getRandomString(COMPETITOR_FOUND_INTROS) + "\n" +
                                 "\nName: " + comp.getName() + "\n" +
                                 "\nDescription: " + comp.getDescription() + "\n" +
                                 "Win Rate: " + comp.getWinRate() + "\n" +
@@ -171,6 +168,10 @@ public class BattleBot extends ChatBot {
         }
 
         sendChatMessage(conversationId, replyMessage);
+    }
+
+    private String getRandomString(List<String> input) {
+        return input.get(new Random().nextInt(input.size()));
     }
 
     private void sendBattleGif(int conversationId) {
