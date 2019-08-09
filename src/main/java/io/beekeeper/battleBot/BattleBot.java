@@ -55,7 +55,6 @@ public class BattleBot extends ChatBot {
                                 rowString.append(row.get(i)).append(", ");
                             }
                             System.out.println(rowString);
-
                         }
                 );
             }
