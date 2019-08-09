@@ -27,7 +27,7 @@ public class App {
         BeekeeperSDK sdk = BeekeeperSDK.newInstance(options.beekeeperHost, options.beekeeperApiKey);
 
         CalendarState state = createGoogleState(googleApiFactory, options);
-        ChatBot bot = MeetlySurveyBot.create(api, sdk, googleApiFactory, state);
+        ChatBot bot = BattleBot.create(api, sdk, googleApiFactory, state);
 
         try {
             state.run();

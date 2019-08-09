@@ -40,7 +40,7 @@ import io.beekeeper.sdk.BeekeeperSDK;
 import io.beekeeper.sdk.ChatBot;
 import io.beekeeper.sdk.model.ConversationMessage;
 
-public class MeetlySurveyBot {
+public class BattleBot {
 
     public static ChatBot create(BeekeeperApi api,
                                  BeekeeperSDK sdk,
