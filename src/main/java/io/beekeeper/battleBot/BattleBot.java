@@ -19,7 +19,7 @@ public class BattleBot extends ChatBot {
     private final BeekeeperApi api;
     private final BeekeeperSDK sdk;
     private final String battleSheetId;
-    private final String SHEET_RANGE = "Class Data!A2:E";
+    private final String SHEET_RANGE = "Competitors!A2:E";
 
     public BattleBot(
             BeekeeperApi api,
@@ -37,6 +37,7 @@ public class BattleBot extends ChatBot {
     }
 
     private void loadSheet() {
+        System.out.println("Loading Sheet with ID:" + battleSheetId);
         try {
             ValueRange response = sheetsService.spreadsheets().values()
                     .get(battleSheetId, SHEET_RANGE)
