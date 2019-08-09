@@ -1,5 +1,8 @@
 package io.beekeeper.battleBot;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class BotResources {
     public static final String INTRO = "\uD83D\uDC4B\uD83C\uDFFCHi there! What can I help you with today? Here's what I can do:\n" +
             "\n" +
@@ -10,6 +13,12 @@ public class BotResources {
 
     public static final String COMPETITOR_NOT_FOUND = "Oh I am sorry, it looks like I could not find what you are looking for \uD83D\uDE1FUse /list to get a list of all our documented competitors or use this Google form to add an insight about a new one: https://docs.google.com/forms/d/e/1FAIpQLSfMV6oPfRD2Zy24raRA-VlgRileQUcbIzW29OTSNlsF8sGLMA/viewform";
 
-    public static final String COMPTETITOR_FOUND_INTRO = "\uD83D\uDE29Uuugh - good one! Here is what I could find: ";
+    public static final List<String> COMPTETITOR_FOUND_INTRO = Arrays.asList(
+            "\uD83D\uDE30Ouch! That hurts. I could find this:",
+            "\uD83D\uDE29Uuugh - good one! Here is what I could find: ",
+            "\uD83D\uDE33Pew, these guys stand no chance against us. Find out more here: \n"
+    );
+
+
 
 }
