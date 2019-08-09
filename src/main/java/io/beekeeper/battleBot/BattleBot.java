@@ -120,7 +120,7 @@ public class BattleBot extends ChatBot {
 
         // Ignore if not a command
         if (!input.startsWith("/")) {
-            return;
+            sendChatMessage(conversationId, BotResources.INTRO);
         }
 
         // TODO: Define more commands
