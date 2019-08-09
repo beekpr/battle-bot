@@ -86,7 +86,7 @@ public class BattleBot extends ChatBot {
                 );
             }
         } catch (Exception ex) {
-            System.out.println(ex.getStackTrace());
+            System.out.println(ex.getMessage());
         }
     }
 
