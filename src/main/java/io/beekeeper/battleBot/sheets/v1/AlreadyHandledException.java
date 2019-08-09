@@ -1,4 +1,4 @@
-package io.beekeeper.meetly.sheets.v1;
+package io.beekeeper.battleBot.sheets.v1;
 
 public class AlreadyHandledException extends Exception {
 

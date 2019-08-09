@@ -1,4 +1,4 @@
-package io.beekeeper.meetly.google;
+package io.beekeeper.battleBot.google;
 
 import java.io.FileInputStream;
 import java.io.IOException;

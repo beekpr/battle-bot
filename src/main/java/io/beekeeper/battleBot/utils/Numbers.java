@@ -1,4 +1,4 @@
-package io.beekeeper.meetly.utils;
+package io.beekeeper.battleBot.utils;
 
 public class Numbers {
 

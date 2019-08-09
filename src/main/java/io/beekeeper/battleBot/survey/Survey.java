@@ -1,4 +1,4 @@
-package io.beekeeper.meetly.survey;
+package io.beekeeper.battleBot.survey;
 
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;

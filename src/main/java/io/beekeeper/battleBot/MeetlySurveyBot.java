@@ -1,8 +1,8 @@
-package io.beekeeper.meetly;
+package io.beekeeper.battleBot;
 
-import static io.beekeeper.meetly.sheets.v1.SheetUtils.cell;
-import static io.beekeeper.meetly.sheets.v1.SheetUtils.row;
-import static io.beekeeper.meetly.sheets.v1.SheetUtils.rows;
+import static io.beekeeper.battleBot.sheets.v1.SheetUtils.cell;
+import static io.beekeeper.battleBot.sheets.v1.SheetUtils.row;
+import static io.beekeeper.battleBot.sheets.v1.SheetUtils.rows;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -26,16 +26,16 @@ import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.UpdateCellsRequest;
 
 import io.beekeeper.core.BeekeeperApi;
-import io.beekeeper.meetly.google.GoogleApiFactory;
-import io.beekeeper.meetly.google.calendar.CalendarState;
-import io.beekeeper.meetly.sheets.v1.AlreadyHandledException;
-import io.beekeeper.meetly.sheets.v1.DeveloperMetadataHelper;
-import io.beekeeper.meetly.sheets.v1.MetaDataKeys;
-import io.beekeeper.meetly.sheets.v1.SurveySpreadsheets;
-import io.beekeeper.meetly.survey.Survey;
-import io.beekeeper.meetly.survey.SurveyResponseJWT;
-import io.beekeeper.meetly.survey.SurveySender;
-import io.beekeeper.meetly.utils.Numbers;
+import io.beekeeper.battleBot.google.GoogleApiFactory;
+import io.beekeeper.battleBot.google.calendar.CalendarState;
+import io.beekeeper.battleBot.sheets.v1.AlreadyHandledException;
+import io.beekeeper.battleBot.sheets.v1.DeveloperMetadataHelper;
+import io.beekeeper.battleBot.sheets.v1.MetaDataKeys;
+import io.beekeeper.battleBot.sheets.v1.SurveySpreadsheets;
+import io.beekeeper.battleBot.survey.Survey;
+import io.beekeeper.battleBot.survey.SurveyResponseJWT;
+import io.beekeeper.battleBot.survey.SurveySender;
+import io.beekeeper.battleBot.utils.Numbers;
 import io.beekeeper.sdk.BeekeeperSDK;
 import io.beekeeper.sdk.ChatBot;
 import io.beekeeper.sdk.model.ConversationMessage;

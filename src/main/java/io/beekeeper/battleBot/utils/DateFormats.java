@@ -1,4 +1,4 @@
-package io.beekeeper.meetly.utils;
+package io.beekeeper.battleBot.utils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

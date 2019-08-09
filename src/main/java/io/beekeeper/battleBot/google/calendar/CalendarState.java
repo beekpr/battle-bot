@@ -1,4 +1,4 @@
-package io.beekeeper.meetly.google.calendar;
+package io.beekeeper.battleBot.google.calendar;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -12,7 +12,7 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 
-import io.beekeeper.meetly.google.GoogleApiFactory;
+import io.beekeeper.battleBot.google.GoogleApiFactory;
 import io.beekeeper.sdk.util.EventSource;
 import lombok.RequiredArgsConstructor;
 

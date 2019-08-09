@@ -1,4 +1,4 @@
-package io.beekeeper.meetly;
+package io.beekeeper.battleBot;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -11,8 +11,8 @@ import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 
-import io.beekeeper.meetly.google.GoogleApiFactory;
-import io.beekeeper.meetly.google.calendar.CalendarState;
+import io.beekeeper.battleBot.google.GoogleApiFactory;
+import io.beekeeper.battleBot.google.calendar.CalendarState;
 
 public class TestStuff {
     public static void test(GoogleApiFactory googleApiFactory, CalendarState state) {

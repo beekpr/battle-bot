@@ -1,4 +1,4 @@
-package io.beekeeper.meetly.survey;
+package io.beekeeper.battleBot.survey;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -28,8 +28,8 @@ import io.beekeeper.core.model.SendMessageActionFieldsModel;
 import io.beekeeper.core.model.SendMessageActionFieldsModel.MessageTypeEnum;
 import io.beekeeper.core.model.SendMessageActionObject;
 import io.beekeeper.core.model.UserResource;
-import io.beekeeper.meetly.survey.SurveyResponseJWT.SurveyResponseJWTBuilder;
-import io.beekeeper.meetly.utils.SDKHelper;
+import io.beekeeper.battleBot.survey.SurveyResponseJWT.SurveyResponseJWTBuilder;
+import io.beekeeper.battleBot.utils.SDKHelper;
 import lombok.RequiredArgsConstructor;
 import retrofit2.Response;
 

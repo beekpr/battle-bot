@@ -1,12 +1,12 @@
-package io.beekeeper.meetly.sheets.v1;
+package io.beekeeper.battleBot.sheets.v1;
 
-import static io.beekeeper.meetly.sheets.v1.SheetUtils.cell;
-import static io.beekeeper.meetly.sheets.v1.SheetUtils.formula;
-import static io.beekeeper.meetly.sheets.v1.SheetUtils.grid;
-import static io.beekeeper.meetly.sheets.v1.SheetUtils.grids;
-import static io.beekeeper.meetly.sheets.v1.SheetUtils.range;
-import static io.beekeeper.meetly.sheets.v1.SheetUtils.row;
-import static io.beekeeper.meetly.sheets.v1.SheetUtils.rows;
+import static io.beekeeper.battleBot.sheets.v1.SheetUtils.cell;
+import static io.beekeeper.battleBot.sheets.v1.SheetUtils.formula;
+import static io.beekeeper.battleBot.sheets.v1.SheetUtils.grid;
+import static io.beekeeper.battleBot.sheets.v1.SheetUtils.grids;
+import static io.beekeeper.battleBot.sheets.v1.SheetUtils.range;
+import static io.beekeeper.battleBot.sheets.v1.SheetUtils.row;
+import static io.beekeeper.battleBot.sheets.v1.SheetUtils.rows;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,11 +39,11 @@ import com.google.api.services.sheets.v4.model.SpreadsheetProperties;
 import com.google.api.services.sheets.v4.model.UpdateCellsRequest;
 import com.google.api.services.sheets.v4.model.UpdateDimensionPropertiesRequest;
 
-import io.beekeeper.meetly.sheets.v1.SheetUtils.Charts;
-import io.beekeeper.meetly.sheets.v1.SheetUtils.Format;
-import io.beekeeper.meetly.survey.Survey;
-import io.beekeeper.meetly.utils.DateFormats;
-import io.beekeeper.meetly.utils.Numbers;
+import io.beekeeper.battleBot.sheets.v1.SheetUtils.Charts;
+import io.beekeeper.battleBot.sheets.v1.SheetUtils.Format;
+import io.beekeeper.battleBot.survey.Survey;
+import io.beekeeper.battleBot.utils.DateFormats;
+import io.beekeeper.battleBot.utils.Numbers;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

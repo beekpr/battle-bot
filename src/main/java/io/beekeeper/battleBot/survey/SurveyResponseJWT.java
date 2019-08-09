@@ -1,4 +1,4 @@
-package io.beekeeper.meetly.survey;
+package io.beekeeper.battleBot.survey;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;

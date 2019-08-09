@@ -1,4 +1,4 @@
-package io.beekeeper.meetly;
+package io.beekeeper.battleBot;
 
 import java.io.IOException;
 
@@ -7,9 +7,9 @@ import com.beust.jcommander.Parameter;
 
 import io.beekeeper.core.ApiClient;
 import io.beekeeper.core.BeekeeperApi;
-import io.beekeeper.meetly.google.GoogleApiFactory;
-import io.beekeeper.meetly.google.calendar.CalendarState;
-import io.beekeeper.meetly.survey.JWTSecrets;
+import io.beekeeper.battleBot.google.GoogleApiFactory;
+import io.beekeeper.battleBot.google.calendar.CalendarState;
+import io.beekeeper.battleBot.survey.JWTSecrets;
 import io.beekeeper.sdk.BeekeeperSDK;
 import io.beekeeper.sdk.ChatBot;
 
