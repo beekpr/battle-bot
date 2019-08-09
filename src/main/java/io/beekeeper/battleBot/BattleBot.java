@@ -52,6 +52,7 @@ public class BattleBot extends ChatBot {
     }
 
     private void loadSheet() {
+        System.out.println("Loading Sheet with ID:" + battleSheetId);
         try {
             ValueRange response = sheetsService.spreadsheets().values()
                     .get(battleSheetId, SHEET_RANGE)
