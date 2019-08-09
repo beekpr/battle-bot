@@ -17,6 +17,7 @@ public class BattleBot extends ChatBot {
     private final Sheets sheetsService;
     private final DeveloperMetadataHelper metaData;
     private final BeekeeperApi api;
+    private final BeekeeperSDK sdk;
     private final String battleSheetId;
     private final String SHEET_RANGE = "Competitors!A2:E";
 
@@ -28,6 +29,7 @@ public class BattleBot extends ChatBot {
     ) {
         super(sdk);
         this.api = api;
+        this.sdk = sdk;
         this.sheetsService = googleApiFactory.getSheetsService();
         this.metaData = new DeveloperMetadataHelper(sheetsService);
         this.battleSheetId = sheetId;
@@ -65,9 +67,45 @@ public class BattleBot extends ChatBot {
     @Override
     public void onNewMessage(ConversationMessage message, ConversationHelper conversationHelper) {
         try {
-            conversationHelper.reply("Battle ready");
+            processMessage(message);
         } catch (BeekeeperException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
+    }
+
+    private void processMessage(ConversationMessage message) throws BeekeeperException {
+        int conversationId = message.getConversationId();
+        String input = message.getText();
+        String replyMessage;
+
+        // Ignore if not a command
+        if (!input.startsWith("/")) {
+            return;
+        }
+
+        // TODO: Define more commands
+        if (input.startsWith("/competitor")) {
+            replyMessage = this.getCompetitorInformation(input.substring("/competitor".length() - 1));
+        } else {
+            // TODO: List available commands
+            replyMessage = "Unknown command";
+        }
+
+        sendChatMessage(conversationId, replyMessage);
+    }
+
+    /**
+     * Sends a message in the chat.
+     *
+     * @param conversationId - The ID of the current conversation.
+     * @param message        - The message text to be sent in the chat.
+     * @throws BeekeeperException - sendMessage can throw an Exception
+     */
+    private void sendChatMessage(int conversationId, String message) throws BeekeeperException {
+        sdk.getConversations().sendMessage(conversationId, message).execute();
+    }
+
+    private String getCompetitorInformation(String competitorName) {
+        return "There is no info on: " + competitorName;
     }
 }
