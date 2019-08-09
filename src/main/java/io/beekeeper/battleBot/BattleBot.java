@@ -5,6 +5,7 @@ import static io.beekeeper.battleBot.sheets.v1.SheetUtils.row;
 import static io.beekeeper.battleBot.sheets.v1.SheetUtils.rows;
 
 import java.io.IOException;
+import java.rmi.server.ExportException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -53,7 +54,7 @@ public class BattleBot extends ChatBot {
             BeekeeperSDK sdk,
             GoogleApiFactory googleApiFactory,
             String sheetId
-    ) throws IOException {
+    ) {
         super(sdk);
         this.api = api;
         this.sheetsService = googleApiFactory.getSheetsService();
@@ -62,26 +63,30 @@ public class BattleBot extends ChatBot {
         loadSheet();
     }
 
-    private void loadSheet() throws IOException {
-        ValueRange response = sheetsService.spreadsheets().values()
-                .get(battleSheetId, SHEET_RANGE)
-                .execute();
+    private void loadSheet() {
+        try {
+            ValueRange response = sheetsService.spreadsheets().values()
+                    .get(battleSheetId, SHEET_RANGE)
+                    .execute();
 
-        List<List<Object>> values = response.getValues();
-        if (values == null || values.isEmpty()) {
-            System.out.println("No data found.");
-        } else {
-            System.out.println("Battlebot Ready");
-            values.forEach(
-                    row -> System.out.printf(
-                            "%s, %s, %s, %s, %s\n",
-                            row.get(0),
-                            row.get(1),
-                            row.get(2),
-                            row.get(3),
-                            row.get(4)
-                    )
-            );
+            List<List<Object>> values = response.getValues();
+            if (values == null || values.isEmpty()) {
+                System.out.println("No data found.");
+            } else {
+                System.out.println("Battlebot Ready");
+                values.forEach(
+                        row -> System.out.printf(
+                                "%s, %s, %s, %s, %s\n",
+                                row.get(0),
+                                row.get(1),
+                                row.get(2),
+                                row.get(3),
+                                row.get(4)
+                        )
+                );
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getStackTrace());
         }
     }
 
