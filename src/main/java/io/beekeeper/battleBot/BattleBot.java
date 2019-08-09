@@ -1,33 +1,16 @@
 package io.beekeeper.battleBot;
 
 import com.google.api.services.sheets.v4.Sheets;
-import com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetRequest;
-import com.google.api.services.sheets.v4.model.GridCoordinate;
-import com.google.api.services.sheets.v4.model.Request;
-import com.google.api.services.sheets.v4.model.UpdateCellsRequest;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import io.beekeeper.battleBot.google.GoogleApiFactory;
 import io.beekeeper.battleBot.sheets.v1.DeveloperMetadataHelper;
-import io.beekeeper.battleBot.sheets.v1.MetaDataKeys;
-import io.beekeeper.battleBot.survey.SurveyResponseJWT;
-import io.beekeeper.battleBot.utils.Numbers;
 import io.beekeeper.core.BeekeeperApi;
 import io.beekeeper.sdk.BeekeeperSDK;
 import io.beekeeper.sdk.ChatBot;
 import io.beekeeper.sdk.exception.BeekeeperException;
 import io.beekeeper.sdk.model.ConversationMessage;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import static io.beekeeper.battleBot.sheets.v1.SheetUtils.*;
 
 public class BattleBot extends ChatBot {
 
@@ -35,7 +18,7 @@ public class BattleBot extends ChatBot {
     private final DeveloperMetadataHelper metaData;
     private final BeekeeperApi api;
     private final String battleSheetId;
-    private final String SHEET_RANGE = "Class Data!A2:E";
+    private final String SHEET_RANGE = "Competitors!A2:E";
 
     public BattleBot(
             BeekeeperApi api,
