@@ -65,18 +65,18 @@ public class BattleBot extends ChatBot {
             for (List<Object> row : values) {
                 try {
                     Competitor competitor = competitorByName.getOrDefault(
-                            row.get(0),
+                            tryGetCell(row, 0),
                             Competitor
                                     .builder()
-                                    .name(row.get(0).toString())
+                                    .name(tryGetCell(row, 0))
                                     .commands(new ArrayList<>())
                                     .urls(new ArrayList<>())
-                                    .description(row.get(2).toString())
-                                    .winRate(row.get(3).toString())
+                                    .description(tryGetCell(row, 2))
+                                    .winRate(tryGetCell(row, 3))
                                     .build()
                     );
-                    competitor.getCommands().add(row.get(1).toString());
-                    competitor.getUrls().add(row.get(4).toString());
+                    competitor.getCommands().add(tryGetCell(row, 1));
+                    competitor.getUrls().add(tryGetCell(row, 4));
                     competitorByName.putIfAbsent(competitor.getName(), competitor);
                     printRow(row);
                 } catch (Exception ex) {
@@ -86,6 +86,14 @@ public class BattleBot extends ChatBot {
             return competitorByName.values();
         }
         return Collections.emptyList();
+    }
+
+    private String tryGetCell(List<Object> row, int idx) {
+        try{
+            return row.get(idx).toString();
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     private void printRow(List<Object> row) {
