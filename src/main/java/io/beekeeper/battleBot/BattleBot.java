@@ -17,6 +17,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class BattleBot extends ChatBot {
 
@@ -120,11 +122,25 @@ public class BattleBot extends ChatBot {
             sendChatMessage(conversationId, BotResources.INTRO);
         }
 
-        // TODO: Define more commands
-        if (input.startsWith("/competitor")) {
-            replyMessage = this.getCompetitorInformation(input.substring("/competitor".length() - 1));
+        if (input.startsWith("/list")) {
+            replyMessage = competitorData
+                    .stream()
+                    .map(Competitor::getName)
+                    .collect(Collectors.toList())
+                    .toString();
+        } else if (input.startsWith("/")) {
+            String requestedCompetitor = input.substring(1);
+            Optional<Competitor> competitor = competitorData
+                    .stream()
+                    .filter(c -> c.getName().equals(requestedCompetitor))
+                    .findFirst();
+            if (competitor.isPresent()) {
+                replyMessage = competitor.get().getName();
+            } else {
+                replyMessage = "Competitor not found";
+            }
         } else {
-            // TODO: List available commands
+            // TODO: List commands
             replyMessage = "Unknown command";
         }
 

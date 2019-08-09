@@ -8,6 +8,7 @@ public class BotResources {
             "Have you come across a new competitor? Type in /add\n" +
             "Use /{{contact's email adress}} to fetch everything related to the person you are meeting in your upcoming pitch";
 
+    public static final String COMPETITOR_NOT_FOUND = "";
 
 
 
