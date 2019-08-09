@@ -49,14 +49,14 @@ public class BattleBot extends ChatBot {
             } else {
                 System.out.println("Battlebot Ready");
                 values.forEach(
-                        row -> System.out.printf(
-                                "%s, %s, %s, %s, %s\n",
-                                row.get(0),
-                                row.get(1),
-                                row.get(2),
-                                row.get(3),
-                                row.get(4)
-                        )
+                        row -> {
+                            StringBuilder rowString = new StringBuilder();
+                            for (int i = 0; i < row.size(); i++) {
+                                rowString.append(row.get(i)).append(", ");
+                            }
+                            System.out.println(rowString);
+
+                        }
                 );
             }
         } catch (Exception ex) {
