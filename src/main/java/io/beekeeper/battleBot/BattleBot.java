@@ -39,6 +39,7 @@ import io.beekeeper.battleBot.survey.SurveySender;
 import io.beekeeper.battleBot.utils.Numbers;
 import io.beekeeper.sdk.BeekeeperSDK;
 import io.beekeeper.sdk.ChatBot;
+import io.beekeeper.sdk.exception.BeekeeperException;
 import io.beekeeper.sdk.model.ConversationMessage;
 
 public class BattleBot extends ChatBot {
@@ -46,6 +47,7 @@ public class BattleBot extends ChatBot {
     private final Sheets sheetsService;
     private final DeveloperMetadataHelper metaData;
     private final BeekeeperApi api;
+    private final BeekeeperSDK sdk;
     private final String battleSheetId;
     private final String SHEET_RANGE = "A2:E";
 
@@ -57,6 +59,7 @@ public class BattleBot extends ChatBot {
     ) {
         super(sdk);
         this.api = api;
+        this.sdk = sdk;
         this.sheetsService = googleApiFactory.getSheetsService();
         this.metaData = new DeveloperMetadataHelper(sheetsService);
         this.battleSheetId = sheetId;
@@ -92,62 +95,48 @@ public class BattleBot extends ChatBot {
 
     @Override
     public void onNewMessage(ConversationMessage message, ConversationHelper conversationHelper) {
-        SurveyResponseJWT jwt = SurveyResponseJWT.decode(message.getText());
-        if (jwt == null) {
+        try {
+            processMessage(message);
+        } catch (BeekeeperException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void processMessage(ConversationMessage message) throws BeekeeperException {
+        int conversationId = message.getConversationId();
+        String input = message.getText();
+        String replyMessage;
+
+        // Ignore if not a command
+        if (!input.startsWith("/")) {
             return;
         }
 
-        Optional<Map<String, String>> map;
-        try {
-            map = metaData.getMap(jwt.getSpreadsheetId(), MetaDataKeys.responseIdData(jwt.getResponseId()));
-            if (!map.isPresent()) {
-                System.err.println("Could not find metadata associated with response id " + jwt.getResponseId());
-                return;
-            }
-
-            Integer sheetId = Numbers.tryParse(map.get().get("sheetId"));
-            Integer rowId = Numbers.tryParse(map.get().get("rowId"));
-
-            if (sheetId == null || rowId == null) {
-                System.err.println("Incorrect metadata information.");
-                return;
-            }
-            DateTimeFormatter timeFormat = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
-
-            this.sheetsService.spreadsheets()
-                    .batchUpdate(
-                            jwt.getSpreadsheetId(),
-                            new BatchUpdateSpreadsheetRequest().setRequests(
-                                    Arrays.asList(
-                                            new Request().setUpdateCells(
-                                                    new UpdateCellsRequest()
-                                                            .setStart(
-                                                                    new GridCoordinate().setSheetId(sheetId)
-                                                                            .setRowIndex(rowId)
-                                                                            .setColumnIndex(1)
-                                                            )
-                                                            .setRows(
-                                                                    rows(
-                                                                            row(
-                                                                                    cell(Numbers.tryParse(jwt.getValue())),
-                                                                                    cell(LocalDateTime.now(ZoneId.of("Z")).format(timeFormat))
-                                                                            )
-                                                                    )
-                                                            )
-                                                            .setFields("*")
-                                            )
-                                    )
-                            )
-                    )
-                    .execute();
-
-        } catch (IOException e) {
-            System.err.println("Could not get metadata for response id " + jwt.getResponseId());
-            e.printStackTrace();
+        // TODO: Define more commands
+        if (input.startsWith("/competitor")) {
+            replyMessage = this.getCompetitorInformation(input.substring("/competitor".length() - 1));
+        } else {
+            // TODO: List available commands
+            replyMessage = "Unknown command";
         }
 
+        sendChatMessage(conversationId, replyMessage);
     }
 
+    /**
+     * Sends a message in the chat.
+     *
+     * @param conversationId - The ID of the current conversation.
+     * @param message - The message text to be sent in the chat.
+     * @throws BeekeeperException - sendMessage can throw an Exception
+     */
+    private void sendChatMessage(int conversationId, String message) throws BeekeeperException {
+        sdk.getConversations().sendMessage(conversationId, message).execute();
+    }
+
+    private String getCompetitorInformation(String competitorName) {
+        return "There is no info on: " + competitorName;
+    }
 
     private static class EventHandler implements Consumer<Event> {
 
