@@ -10,6 +10,7 @@ import io.beekeeper.sdk.ChatBot;
 import io.beekeeper.sdk.exception.BeekeeperException;
 import io.beekeeper.sdk.model.ConversationMessage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BattleBot extends ChatBot {
@@ -20,6 +21,7 @@ public class BattleBot extends ChatBot {
     private final BeekeeperSDK sdk;
     private final String battleSheetId;
     private final String SHEET_RANGE = "Competitors!A2:E";
+    private List<Competitor> competitorData = new ArrayList<>();
 
     public BattleBot(
             BeekeeperApi api,
@@ -42,24 +44,30 @@ public class BattleBot extends ChatBot {
             ValueRange response = sheetsService.spreadsheets().values()
                     .get(battleSheetId, SHEET_RANGE)
                     .execute();
-
-            List<List<Object>> values = response.getValues();
-            if (values == null || values.isEmpty()) {
-                System.out.println("No data found.");
-            } else {
-                System.out.println("Battlebot Ready");
-                values.forEach(
-                        row -> {
-                            StringBuilder rowString = new StringBuilder();
-                            for (int i = 0; i < row.size(); i++) {
-                                rowString.append(row.get(i)).append(", ");
-                            }
-                            System.out.println(rowString);
-                        }
-                );
-            }
+            printSheet(response);
+            this.competitorData = createCompetitorData(response);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
+        }
+    }
+
+    private List<Competitor> createCompetitorData(ValueRange response) {
+        return null;
+    }
+
+    private void printSheet(ValueRange response) {
+        List<List<Object>> values = response.getValues();
+        if (values == null || values.isEmpty()) {
+            System.out.println("No data found.");
+        } else {
+            System.out.println("Battlebot Ready");
+            values.forEach(
+                    row -> {
+                        StringBuilder rowString = new StringBuilder();
+                        row.forEach(o -> rowString.append(o).append(", "));
+                        System.out.println(rowString);
+                    }
+            );
         }
     }
 
