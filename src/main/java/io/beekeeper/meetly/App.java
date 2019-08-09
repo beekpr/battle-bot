@@ -22,7 +22,7 @@ public class App {
         commander.parse(args);
 
         JWTSecrets.setSecret(options.jwtSecret);
-        GoogleApiFactory googleApiFactory = new GoogleApiFactory("Meetly", options.googleServiceAccountJson);
+        GoogleApiFactory googleApiFactory = new GoogleApiFactory("Battle-Bot", options.googleServiceAccountJson);
         BeekeeperApi api = new BeekeeperApi(new ApiClient(options.beekeeperHost, options.beekeeperApiKey));
         BeekeeperSDK sdk = BeekeeperSDK.newInstance(options.beekeeperHost, options.beekeeperApiKey);
 
