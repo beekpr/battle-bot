@@ -3,9 +3,10 @@ package io.beekeeper.battleBot;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import io.beekeeper.battleBot.google.GoogleApiFactory;
-import io.beekeeper.core.ApiClient;
-import io.beekeeper.core.BeekeeperApi;
+
 import io.beekeeper.sdk.BeekeeperSDK;
+import io.beekeeper.sdk.core.ApiClient;
+import io.beekeeper.sdk.core.BeekeeperApi;
 
 public class App {
     public static final String SHEET_ID = "1FC-sBLCPtTvvb74z6KpTOTZuQMtxYGKTF1fxs-HLTzU";

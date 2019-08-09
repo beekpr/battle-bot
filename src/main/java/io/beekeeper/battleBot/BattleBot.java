@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import io.beekeeper.battleBot.google.GoogleApiFactory;
-import io.beekeeper.core.BeekeeperApi;
 import io.beekeeper.sdk.BeekeeperSDK;
 import io.beekeeper.sdk.ChatBot;
+import io.beekeeper.sdk.core.BeekeeperApi;
 import io.beekeeper.sdk.exception.BeekeeperException;
 import io.beekeeper.sdk.model.ConversationMessage;
 
