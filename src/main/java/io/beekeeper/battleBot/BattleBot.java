@@ -168,7 +168,7 @@ public class BattleBot extends ChatBot {
         try {
             FileAttachment battleGif = getSdk()
                     .getFiles()
-                    .uploadPhoto(new File(Resources.getResource("gifs/bring_it.gif").toURI()))
+                    .uploadPhoto(new File(String.format("%s/src/main/resources/gifs/bring_it.gif", System.getProperty("user.dir"))))
                     .execute();
             sdk.getConversations().sendMessage(conversationId, SendMessageParams.builder().photoId(battleGif.getId()).build());
         } catch (Exception e) {
