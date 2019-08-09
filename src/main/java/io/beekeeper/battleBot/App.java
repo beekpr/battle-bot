@@ -41,11 +41,6 @@ public class App {
                 names = { "--beekeeperApiKey" })
         String beekeeperApiKey;
 
-        @Parameter(description = "The calendar id to check",
-                required = true,
-                names = { "--googleCalendarId" })
-        String googleCalendarId;
-
         @Parameter(description = "The Api access file for Google API ",
                 required = true,
                 names = { "--googleServiceAccountJson" })
