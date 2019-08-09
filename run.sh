@@ -1,1 +1,2 @@
-java -jar build/libs/battle-bot-all.jar --beekeeperHost "https://team.beekeeper.io" --beekeeperApiKey "" --googleServiceAccountJson "~/"
+JAVA_HOME=/usr/lib/jvm/java-8-openjdk/ ./gradlew build
+java -jar build/libs/battle-bot-all.jar --beekeeperHost "http://fge.martin.bkpr.link" --beekeeperApiKey " 5f077247-c193-4beb-b989-29a858182084" --googleServiceAccountJson "/home/stefan/BattleBot-ffe28c6779de.json"
