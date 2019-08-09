@@ -48,16 +48,4 @@ public class GoogleApiFactory {
         return new Sheets.Builder(Utils.getDefaultTransport(), Utils.getDefaultJsonFactory(), credential)
             .setApplicationName(applicationName).build();
     }
-
-    /**
-     * Build and return an authorized Drive client service.
-     *
-     * @return an authorized Sheets client service
-     * @throws IOException
-     */
-    public Drive getDriveService() {
-        Credential credential = authorize(Arrays.asList(DriveScopes.DRIVE_FILE));
-        return new Drive.Builder(Utils.getDefaultTransport(), Utils.getDefaultJsonFactory(), credential)
-            .setApplicationName(applicationName).build();
-    }
 }
