@@ -5,19 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import com.google.common.io.Files;
-import com.google.common.io.Resources;
 import io.beekeeper.battleBot.google.GoogleApiFactory;
 import io.beekeeper.sdk.BeekeeperSDK;
 import io.beekeeper.sdk.ChatBot;
 import io.beekeeper.sdk.core.BeekeeperApi;
 import io.beekeeper.sdk.exception.BeekeeperException;
-import io.beekeeper.sdk.exception.MediaTypeException;
 import io.beekeeper.sdk.model.ConversationMessage;
 import io.beekeeper.sdk.model.FileAttachment;
 import io.beekeeper.sdk.params.SendMessageParams;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,8 +94,12 @@ public class BattleBot extends ChatBot {
                                     .winRate(tryGetCell(row, 3))
                                     .build()
                     );
-                    competitor.getCommands().add(tryGetCell(row, 1));
-                    competitor.getUrls().add(tryGetCell(row, 4));
+                    if (competitor.getCommands() != null) {
+                        competitor.getCommands().add(tryGetCell(row, 1));
+                    }
+                    if (competitor.getUrls() != null) {
+                        competitor.getUrls().add(tryGetCell(row, 4));
+                    }
                     competitorByName.putIfAbsent(competitor.getName(), competitor);
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -110,7 +111,7 @@ public class BattleBot extends ChatBot {
     }
 
     private String tryGetCell(List<Object> row, int idx) {
-        try{
+        try {
             return row.get(idx).toString();
         } catch (Exception ex) {
             return null;
@@ -155,10 +156,10 @@ public class BattleBot extends ChatBot {
                 Competitor comp = competitor.get();
                 replyMessage =
                         COMPTETITOR_FOUND_INTRO + "\n" +
-                        "Name: " + comp.getName() + "\n" +
-                        "Description: " + comp.getDescription() + "\n" +
-                        "Win Rate: " + comp.getWinRate() + "\n" +
-                        "URLs: " + comp.getUrls().toString().replace(",", "\n");
+                                "Name: " + comp.getName() + "\n" +
+                                "Description: " + comp.getDescription() + "\n" +
+                                "Win Rate: " + comp.getWinRate() + "\n" +
+                                "URLs: " + comp.getUrls().toString().replace(",", "\n");
             } else {
                 replyMessage = COMPETITOR_NOT_FOUND;
             }
