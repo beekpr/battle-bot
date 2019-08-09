@@ -148,11 +148,11 @@ public class BattleBot extends ChatBot {
             if (competitor.isPresent()) {
                 Competitor comp = competitor.get();
                 replyMessage =
-                        COMPTETITOR_FOUND_INTRO +
-                        comp.getName() + "\n" +
-                        comp.getDescription() + "\n" +
-                        comp.getWinRate() + "\n" +
-                        comp.getUrls();
+                        COMPTETITOR_FOUND_INTRO + "\n" +
+                        "Name: " + comp.getName() + "\n" +
+                        "Description: " + comp.getDescription() + "\n" +
+                        "Win Rate: " + comp.getWinRate() + "\n" +
+                        "URLs: " + comp.getUrls().toString().replace(",", "\n");
             } else {
                 replyMessage = COMPETITOR_NOT_FOUND;
             }
