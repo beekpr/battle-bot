@@ -8,7 +8,7 @@ import java.net.URISyntaxException;
 public class TestStuff {
 
     public static void main(String[] args) throws URISyntaxException {
-       File f = new File(String.format("%s/src/main/resources/gifs/bring_it.gif", System.getProperty("user.dir")));
-       System.out.println(f.exists());
+       File f = new File(String.format("%s/src/main/resources/gifs/", System.getProperty("user.dir")));
+       System.out.println(f.length());
     }
 }

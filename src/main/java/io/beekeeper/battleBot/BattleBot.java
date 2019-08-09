@@ -132,6 +132,7 @@ public class BattleBot extends ChatBot {
         if (!input.startsWith("/")) {
             sendChatMessage(conversationId, BotResources.INTRO);
             sendBattleGif(conversationId);
+            return;
         }
 
         if (input.equals("/list")) {
