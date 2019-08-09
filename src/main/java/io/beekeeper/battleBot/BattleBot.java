@@ -25,6 +25,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static io.beekeeper.battleBot.BotResources.COMPETITOR_NOT_FOUND;
+import static io.beekeeper.battleBot.BotResources.COMPTETITOR_FOUND_INTRO;
+
 public class BattleBot extends ChatBot {
 
     private final Sheets sheetsService;
@@ -128,22 +131,29 @@ public class BattleBot extends ChatBot {
             sendBattleGif(conversationId);
         }
 
-        if (input.startsWith("/list")) {
+        if (input.equals("/list")) {
             replyMessage = competitorData
                     .stream()
                     .map(Competitor::getName)
                     .collect(Collectors.toList())
-                    .toString();
+                    .toString()
+                    .replace(",", "\n");
         } else if (input.startsWith("/")) {
-            String requestedCompetitor = input.substring(1);
+            String requestedCompetitor = input.substring(1).toLowerCase();
             Optional<Competitor> competitor = competitorData
                     .stream()
-                    .filter(c -> c.getName().equals(requestedCompetitor))
+                    .filter(c -> c.getName().toLowerCase().equals(requestedCompetitor))
                     .findFirst();
             if (competitor.isPresent()) {
-                replyMessage = competitor.get().getName();
+                Competitor comp = competitor.get();
+                replyMessage =
+                        COMPTETITOR_FOUND_INTRO +
+                        comp.getName() + "\n" +
+                        comp.getDescription() + "\n" +
+                        comp.getWinRate() + "\n" +
+                        comp.getUrls();
             } else {
-                replyMessage = "Competitor not found";
+                replyMessage = COMPETITOR_NOT_FOUND;
             }
         } else {
             // TODO: List commands
