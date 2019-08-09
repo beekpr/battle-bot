@@ -21,10 +21,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -61,13 +63,13 @@ public class BattleBot extends ChatBot {
                     .get(battleSheetId, COMPETITOR_SHEET_RANGE)
                     .execute();
             this.competitorData = createCompetitorData(response);
-            competitorData.forEach(c -> {
-                try {
-                    System.out.println(new ObjectMapper().writeValueAsString(c));
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-            });
+//            competitorData.forEach(c -> {
+//                try {
+//                    System.out.println(new ObjectMapper().writeValueAsString(c));
+//                } catch (JsonProcessingException e) {
+//                    e.printStackTrace();
+//                }
+//            });
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             throw new RuntimeException("Failed to load competitor data");
@@ -89,7 +91,7 @@ public class BattleBot extends ChatBot {
                                     .builder()
                                     .name(tryGetCell(row, 0))
                                     .commands(new ArrayList<>())
-                                    .urls(new ArrayList<>())
+                                    .urls(new HashSet<>())
                                     .description(tryGetCell(row, 2))
                                     .winRate(tryGetCell(row, 3))
                                     .build()
@@ -156,8 +158,8 @@ public class BattleBot extends ChatBot {
                 Competitor comp = competitor.get();
                 replyMessage =
                         COMPTETITOR_FOUND_INTRO + "\n" +
-                                "Name: " + comp.getName() + "\n" +
-                                "Description: " + comp.getDescription() + "\n" +
+                                "\nName: " + comp.getName() + "\n" +
+                                "\nDescription: " + comp.getDescription() + "\n" +
                                 "Win Rate: " + comp.getWinRate() + "\n" +
                                 "URLs: " + comp.getUrls().toString().replace(",", "\n");
             } else {

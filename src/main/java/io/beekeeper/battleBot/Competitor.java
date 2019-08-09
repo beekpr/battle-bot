@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Builder
@@ -18,5 +19,5 @@ public class Competitor {
 
     private final String winRate;
 
-    private final List<String> urls;
+    private final Set<String> urls;
 }
