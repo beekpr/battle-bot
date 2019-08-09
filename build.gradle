@@ -5,7 +5,7 @@ plugins {
     id 'application'
 }
 
-mainClassName = 'io.beekeeper.meetly.App'
+mainClassName = 'io.beekeeper.battleBot.App'
 applicationDefaultJvmArgs = ["-Xms64M","-Xmx128M"]
 
 repositories {
