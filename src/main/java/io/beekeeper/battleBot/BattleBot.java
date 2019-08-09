@@ -20,7 +20,7 @@ public class BattleBot extends ChatBot {
     private final BeekeeperApi api;
     private final BeekeeperSDK sdk;
     private final String battleSheetId;
-    private final String SHEET_RANGE = "Competitors!A2:E";
+    private final String COMPETITOR_SHEET_RANGE = "Competitors!A2:E";
     private List<Competitor> competitorData = new ArrayList<>();
 
     public BattleBot(
@@ -42,20 +42,16 @@ public class BattleBot extends ChatBot {
         System.out.println("Loading Sheet with ID:" + battleSheetId);
         try {
             ValueRange response = sheetsService.spreadsheets().values()
-                    .get(battleSheetId, SHEET_RANGE)
+                    .get(battleSheetId, COMPETITOR_SHEET_RANGE)
                     .execute();
-            printSheet(response);
             this.competitorData = createCompetitorData(response);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
+            throw new RuntimeException("Failed to load competitor data");
         }
     }
 
     private List<Competitor> createCompetitorData(ValueRange response) {
-        return null;
-    }
-
-    private void printSheet(ValueRange response) {
         List<List<Object>> values = response.getValues();
         if (values == null || values.isEmpty()) {
             System.out.println("No data found.");
