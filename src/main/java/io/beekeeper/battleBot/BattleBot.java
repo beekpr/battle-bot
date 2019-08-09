@@ -11,6 +11,8 @@ import io.beekeeper.sdk.exception.BeekeeperException;
 import io.beekeeper.sdk.model.ConversationMessage;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,7 @@ public class BattleBot extends ChatBot {
     private final BeekeeperSDK sdk;
     private final String battleSheetId;
     private final String COMPETITOR_SHEET_RANGE = "Competitors!A2:E";
-    private List<Competitor> competitorData = new ArrayList<>();
+    private Collection<Competitor> competitorData = new ArrayList<>();
 
     public BattleBot(
             BeekeeperApi api,
@@ -53,24 +55,37 @@ public class BattleBot extends ChatBot {
         }
     }
 
-    private List<Competitor> createCompetitorData(ValueRange response) {
+    private Collection<Competitor> createCompetitorData(ValueRange response) {
         Map<String, Competitor> competitorByName = new HashMap<>();
         List<List<Object>> values = response.getValues();
         if (values == null || values.isEmpty()) {
             System.out.println("No data found.");
         } else {
             System.out.println("Battlebot Ready");
-            values.forEach(
-                    row -> {
-                        Competitor competitor = competitorByName.getOrDefault(
-                                row.get(0),
-                                Competitor.builder().build()
-                                );
-                        competitorByName.putIfAbsent(competitor.getName(), competitor);
-                        printRow(row);
-                    }
-            );
+            for (List<Object> row : values) {
+                try {
+                    Competitor competitor = competitorByName.getOrDefault(
+                            row.get(0),
+                            Competitor
+                                    .builder()
+                                    .name(row.get(0).toString())
+                                    .commands(new ArrayList<>())
+                                    .urls(new ArrayList<>())
+                                    .description(row.get(2).toString())
+                                    .winRate(row.get(3).toString())
+                                    .build()
+                    );
+                    competitor.getCommands().add(row.get(1).toString());
+                    competitor.getUrls().add(row.get(4).toString());
+                    competitorByName.putIfAbsent(competitor.getName(), competitor);
+                    printRow(row);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            return competitorByName.values();
         }
+        return Collections.emptyList();
     }
 
     private void printRow(List<Object> row) {

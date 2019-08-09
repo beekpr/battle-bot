@@ -14,7 +14,7 @@ public class Competitor {
 
     private final List<String> commands;
 
-    private final String Description;
+    private final String description;
 
     private final String winRate;
 
