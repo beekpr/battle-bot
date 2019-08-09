@@ -11,7 +11,9 @@ import io.beekeeper.sdk.exception.BeekeeperException;
 import io.beekeeper.sdk.model.ConversationMessage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BattleBot extends ChatBot {
 
@@ -52,6 +54,7 @@ public class BattleBot extends ChatBot {
     }
 
     private List<Competitor> createCompetitorData(ValueRange response) {
+        Map<String, Competitor> competitorByName = new HashMap<>();
         List<List<Object>> values = response.getValues();
         if (values == null || values.isEmpty()) {
             System.out.println("No data found.");
@@ -59,12 +62,18 @@ public class BattleBot extends ChatBot {
             System.out.println("Battlebot Ready");
             values.forEach(
                     row -> {
-                        StringBuilder rowString = new StringBuilder();
-                        row.forEach(o -> rowString.append(o).append(", "));
-                        System.out.println(rowString);
+                        Competitor competitor = competitorByName.getOrDefault(row.get(0), new Competitor());
+
+                        printRow(row);
                     }
             );
         }
+    }
+
+    private void printRow(List<Object> row) {
+        StringBuilder rowString = new StringBuilder();
+        row.forEach(o -> rowString.append(o).append(", "));
+        System.out.println(rowString);
     }
 
     @Override
