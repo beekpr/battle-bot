@@ -43,11 +43,20 @@ public class BattleBot extends ChatBot {
 
     private final Sheets sheetsService;
     private final DeveloperMetadataHelper metaData;
+    private final BeekeeperApi api;
+    private final String battleSheetId;
 
-    public BattleBot(BeekeeperApi api, BeekeeperSDK sdk, GoogleApiFactory googleApiFactory) {
+    public BattleBot(
+            BeekeeperApi api,
+            BeekeeperSDK sdk,
+            GoogleApiFactory googleApiFactory,
+            String sheetId
+    ) {
         super(sdk);
+        this.api = api;
         this.sheetsService = googleApiFactory.getSheetsService();
         this.metaData = new DeveloperMetadataHelper(sheetsService);
+        this.battleSheetId = sheetId;
     }
 
     @Override
