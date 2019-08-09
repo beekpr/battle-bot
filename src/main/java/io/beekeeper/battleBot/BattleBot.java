@@ -10,6 +10,7 @@ import io.beekeeper.sdk.ChatBot;
 import io.beekeeper.sdk.core.BeekeeperApi;
 import io.beekeeper.sdk.exception.BeekeeperException;
 import io.beekeeper.sdk.model.ConversationMessage;
+import io.beekeeper.sdk.model.FileAttachment;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -120,6 +121,7 @@ public class BattleBot extends ChatBot {
         // Ignore if not a command
         if (!input.startsWith("/")) {
             sendChatMessage(conversationId, BotResources.INTRO);
+            sendBattleGif(conversationId);
         }
 
         if (input.startsWith("/list")) {
@@ -145,6 +147,10 @@ public class BattleBot extends ChatBot {
         }
 
         sendChatMessage(conversationId, replyMessage);
+    }
+
+    private void sendBattleGif(int conversationId) {
+        FileAttachment battleGif = getSdk().getFiles().uploadPhoto()
     }
 
     /**
