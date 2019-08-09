@@ -27,7 +27,6 @@ import com.google.api.services.sheets.v4.model.UpdateCellsRequest;
 
 import io.beekeeper.core.BeekeeperApi;
 import io.beekeeper.battleBot.google.GoogleApiFactory;
-import io.beekeeper.battleBot.google.calendar.CalendarState;
 import io.beekeeper.battleBot.sheets.v1.AlreadyHandledException;
 import io.beekeeper.battleBot.sheets.v1.DeveloperMetadataHelper;
 import io.beekeeper.battleBot.sheets.v1.MetaDataKeys;
@@ -44,10 +43,9 @@ public class BattleBot {
 
     public static ChatBot create(BeekeeperApi api,
                                  BeekeeperSDK sdk,
-                                 GoogleApiFactory googleApiFactory,
-                                 CalendarState state) {
+                                 GoogleApiFactory googleApiFactory) {
 
-        state.onMeetingEnd.listen(new EventHandler(api, googleApiFactory));
+//        state.onMeetingEnd.listen(new EventHandler(api, googleApiFactory));
         ChatBot bot = new SurveyBot(sdk, googleApiFactory);
         return bot;
     }

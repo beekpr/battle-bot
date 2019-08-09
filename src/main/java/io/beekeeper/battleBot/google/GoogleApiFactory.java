@@ -37,17 +37,6 @@ public class GoogleApiFactory {
         }
     }
 
-    /**
-     * Build and return an authorized Calendar client service.
-     *
-     * @return an authorized Calendar client service
-     * @throws IOException
-     */
-    public Calendar getCalendarService() {
-        Credential credential = authorize(Arrays.asList(CalendarScopes.CALENDAR_READONLY));
-        return new Calendar.Builder(Utils.getDefaultTransport(), Utils.getDefaultJsonFactory(), credential)
-            .setApplicationName(applicationName).build();
-    }
 
     /**
      * Build and return an authorized Sheets client service.
@@ -72,5 +61,4 @@ public class GoogleApiFactory {
         return new Drive.Builder(Utils.getDefaultTransport(), Utils.getDefaultJsonFactory(), credential)
             .setApplicationName(applicationName).build();
     }
-
 }

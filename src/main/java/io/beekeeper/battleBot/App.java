@@ -8,7 +8,6 @@ import com.beust.jcommander.Parameter;
 import io.beekeeper.core.ApiClient;
 import io.beekeeper.core.BeekeeperApi;
 import io.beekeeper.battleBot.google.GoogleApiFactory;
-import io.beekeeper.battleBot.google.calendar.CalendarState;
 import io.beekeeper.battleBot.survey.JWTSecrets;
 import io.beekeeper.sdk.BeekeeperSDK;
 import io.beekeeper.sdk.ChatBot;
@@ -26,21 +25,9 @@ public class App {
         BeekeeperApi api = new BeekeeperApi(new ApiClient(options.beekeeperHost, options.beekeeperApiKey));
         BeekeeperSDK sdk = BeekeeperSDK.newInstance(options.beekeeperHost, options.beekeeperApiKey);
 
-        CalendarState state = createGoogleState(googleApiFactory, options);
-        ChatBot bot = BattleBot.create(api, sdk, googleApiFactory, state);
+        ChatBot bot = BattleBot.create(api, sdk, googleApiFactory);
+        bot.start();
 
-        try {
-            state.run();
-            bot.start();
-        } catch (IOException e1) {
-            System.err.println("Failed to start: " + e1.getMessage());
-            e1.printStackTrace();
-            System.exit(1);
-        }
-    }
-
-    private static CalendarState createGoogleState(GoogleApiFactory apiFactory, Options options) {
-        return new CalendarState(apiFactory, options.googleCalendarId);
     }
 
     private static class Options {
