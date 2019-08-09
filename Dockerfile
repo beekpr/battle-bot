@@ -5,9 +5,9 @@ LABEL Description="Battle Bot"
 
 WORKDIR /opt/bkpr
 
-COPY build/libs/battle-bot-all.jar /opt/bkpr
-COPY BattleBot-ffe28c6779de.json /opt/bkpr/cred.json
-COPY src/main/resources/gifs/* /opt/bkpr/src/main/resources/gifs/
+ADD build/libs/battle-bot-all.jar /opt/bkpr
+ADD BattleBot-ffe28c6779de.json /opt/bkpr/cred.json
+ADD src/main/resources/gifs/* /opt/bkpr/src/main/resources/gifs/
 
 ENTRYPOINT ["java"]
 
