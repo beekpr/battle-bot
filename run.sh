@@ -1,1 +1,1 @@
-java -jar build/libs/battle-bot-all.jar --beekeeperHost "https://team.beekeeper.io" --beekeeperApiKey "" --googleServiceAccountJson ""
+java -jar build/libs/battle-bot-all.jar --beekeeperHost "https://team.beekeeper.io" --beekeeperApiKey "" --googleServiceAccountJson "~/"
