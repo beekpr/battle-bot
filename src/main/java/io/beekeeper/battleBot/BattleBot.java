@@ -1,5 +1,7 @@
 package io.beekeeper.battleBot;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import io.beekeeper.battleBot.google.GoogleApiFactory;
@@ -49,6 +51,13 @@ public class BattleBot extends ChatBot {
                     .get(battleSheetId, COMPETITOR_SHEET_RANGE)
                     .execute();
             this.competitorData = createCompetitorData(response);
+            competitorData.forEach(c -> {
+                try {
+                    System.out.println(new ObjectMapper().writeValueAsString(c));
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            });
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             throw new RuntimeException("Failed to load competitor data");
@@ -78,7 +87,6 @@ public class BattleBot extends ChatBot {
                     competitor.getCommands().add(tryGetCell(row, 1));
                     competitor.getUrls().add(tryGetCell(row, 4));
                     competitorByName.putIfAbsent(competitor.getName(), competitor);
-                    printRow(row);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -94,12 +102,6 @@ public class BattleBot extends ChatBot {
         } catch (Exception ex) {
             return null;
         }
-    }
-
-    private void printRow(List<Object> row) {
-        StringBuilder rowString = new StringBuilder();
-        row.forEach(o -> rowString.append(o).append(", "));
-        System.out.println(rowString);
     }
 
     @Override
