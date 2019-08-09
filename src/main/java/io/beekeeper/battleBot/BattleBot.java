@@ -4,14 +4,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import com.google.common.io.Resources;
 import io.beekeeper.battleBot.google.GoogleApiFactory;
 import io.beekeeper.sdk.BeekeeperSDK;
 import io.beekeeper.sdk.ChatBot;
 import io.beekeeper.sdk.core.BeekeeperApi;
 import io.beekeeper.sdk.exception.BeekeeperException;
+import io.beekeeper.sdk.exception.MediaTypeException;
 import io.beekeeper.sdk.model.ConversationMessage;
 import io.beekeeper.sdk.model.FileAttachment;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -150,7 +154,15 @@ public class BattleBot extends ChatBot {
     }
 
     private void sendBattleGif(int conversationId) {
-        FileAttachment battleGif = getSdk().getFiles().uploadPhoto()
+        try {
+            FileAttachment battleGif = getSdk()
+                    .getFiles()
+                    .uploadPhoto(new File(Resources.getResource("gifs/bring_it.gif").toURI()))
+                    .execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
