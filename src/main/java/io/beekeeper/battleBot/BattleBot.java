@@ -60,13 +60,6 @@ public class BattleBot extends ChatBot {
                     .get(battleSheetId, COMPETITOR_SHEET_RANGE)
                     .execute();
             this.competitorData = createCompetitorData(response);
-//            competitorData.forEach(c -> {
-//                try {
-//                    System.out.println(new ObjectMapper().writeValueAsString(c));
-//                } catch (JsonProcessingException e) {
-//                    e.printStackTrace();
-//                }
-//            });
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             throw new RuntimeException("Failed to load competitor data");
@@ -208,7 +201,4 @@ public class BattleBot extends ChatBot {
         sdk.getConversations().sendMessage(conversationId, message).execute();
     }
 
-    private String getCompetitorInformation(String competitorName) {
-        return "There is no info on: " + competitorName;
-    }
 }
