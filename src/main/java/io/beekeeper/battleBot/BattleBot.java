@@ -13,6 +13,7 @@ import io.beekeeper.sdk.exception.BeekeeperException;
 import io.beekeeper.sdk.exception.MediaTypeException;
 import io.beekeeper.sdk.model.ConversationMessage;
 import io.beekeeper.sdk.model.FileAttachment;
+import io.beekeeper.sdk.params.SendMessageParams;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -169,6 +170,7 @@ public class BattleBot extends ChatBot {
                     .getFiles()
                     .uploadPhoto(new File(Resources.getResource("gifs/bring_it.gif").toURI()))
                     .execute();
+            sdk.getConversations().sendMessage(conversationId, SendMessageParams.builder().photoId(battleGif.getId()).build());
         } catch (Exception e) {
             e.printStackTrace();
         }
