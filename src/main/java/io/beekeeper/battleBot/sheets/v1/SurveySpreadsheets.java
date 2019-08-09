@@ -41,7 +41,6 @@ import com.google.api.services.sheets.v4.model.UpdateDimensionPropertiesRequest;
 
 import io.beekeeper.battleBot.sheets.v1.SheetUtils.Charts;
 import io.beekeeper.battleBot.sheets.v1.SheetUtils.Format;
-import io.beekeeper.battleBot.survey.Survey;
 import io.beekeeper.battleBot.utils.DateFormats;
 import io.beekeeper.battleBot.utils.Numbers;
 import lombok.RequiredArgsConstructor;
@@ -223,51 +222,7 @@ public class SurveySpreadsheets {
         return sheetId;
     }
 
-    public List<Survey> createSurveys(Spreadsheet spreadsheet,
-                                      Integer sheetId,
-                                      Event event) throws IOException {
 
-        System.out.println("Creating new Surveys for event " + event.getSummary());
-
-        List<Survey> result = new LinkedList<Survey>();
-        List<Request> updateRequests = new LinkedList<Request>();
-
-        int row = 14;
-        for (EventAttendee attendee : event.getAttendees()) {
-            System.out.println("Processing Attendee " + attendee.getEmail());
-            if (!this.isParticipant(attendee)) {
-                System.out.println("Skipping attendee because it is not a valid participant " + attendee.getEmail());
-                continue;
-            }
-            System.out.println();
-            String responseId = UUID.randomUUID().toString();
-            Survey survey = new Survey(event, attendee, spreadsheet.getSpreadsheetId(), sheetId, responseId);
-
-            updateRequests.add(
-                new Request().setUpdateCells(
-                    new UpdateCellsRequest()
-                        .setStart(new GridCoordinate().setSheetId(sheetId).setRowIndex(row).setColumnIndex(0))
-                        .setRows(rows(row(cell(attendee.getEmail()))))
-                        .setFields("*")
-                )
-            );
-
-            Map<String, String> metaDataValue = new HashMap<String, String>();
-            metaDataValue.put("sheetId", Integer.toString(sheetId));
-            metaDataValue.put("rowId", Integer.toString(row));
-            updateRequests
-                .add(metaData.create(MetaDataKeys.responseIdData(responseId), metaDataValue));
-            result.add(survey);
-            row++;
-        }
-
-        sheetsService.spreadsheets().batchUpdate(
-            spreadsheet.getSpreadsheetId(),
-            new BatchUpdateSpreadsheetRequest().setRequests(updateRequests)
-        ).execute();
-
-        return result;
-    }
 
     private String getSheetTitle(Event event) {
         return String
