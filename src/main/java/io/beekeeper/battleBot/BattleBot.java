@@ -39,87 +39,75 @@ import io.beekeeper.sdk.BeekeeperSDK;
 import io.beekeeper.sdk.ChatBot;
 import io.beekeeper.sdk.model.ConversationMessage;
 
-public class BattleBot {
+public class BattleBot extends ChatBot {
 
-    public static ChatBot create(BeekeeperApi api,
-                                 BeekeeperSDK sdk,
-                                 GoogleApiFactory googleApiFactory) {
+    private final Sheets sheetsService;
+    private final DeveloperMetadataHelper metaData;
 
-//        state.onMeetingEnd.listen(new EventHandler(api, googleApiFactory));
-        ChatBot bot = new SurveyBot(sdk, googleApiFactory);
-        return bot;
+    public BattleBot(BeekeeperApi api, BeekeeperSDK sdk, GoogleApiFactory googleApiFactory) {
+        super(sdk);
+        this.sheetsService = googleApiFactory.getSheetsService();
+        this.metaData = new DeveloperMetadataHelper(sheetsService);
     }
 
-    private static class SurveyBot extends ChatBot {
-
-        private final Sheets sheetsService;
-        private final DeveloperMetadataHelper metaData;
-
-        public SurveyBot(BeekeeperSDK sdk, GoogleApiFactory googleApiFactory) {
-            super(sdk);
-            this.sheetsService = googleApiFactory.getSheetsService();
-            this.metaData = new DeveloperMetadataHelper(sheetsService);
+    @Override
+    public void onNewMessage(ConversationMessage message, ConversationHelper conversationHelper) {
+        SurveyResponseJWT jwt = SurveyResponseJWT.decode(message.getText());
+        if (jwt == null) {
+            return;
         }
 
-        @Override
-        public void onNewMessage(ConversationMessage message, ConversationHelper conversationHelper) {
-            SurveyResponseJWT jwt = SurveyResponseJWT.decode(message.getText());
-            if (jwt == null) {
+        Optional<Map<String, String>> map;
+        try {
+            map = metaData.getMap(jwt.getSpreadsheetId(), MetaDataKeys.responseIdData(jwt.getResponseId()));
+            if (!map.isPresent()) {
+                System.err.println("Could not find metadata associated with response id " + jwt.getResponseId());
                 return;
             }
 
-            Optional<Map<String, String>> map;
-            try {
-                map = metaData.getMap(jwt.getSpreadsheetId(), MetaDataKeys.responseIdData(jwt.getResponseId()));
-                if (!map.isPresent()) {
-                    System.err.println("Could not find metadata associated with response id " + jwt.getResponseId());
-                    return;
-                }
+            Integer sheetId = Numbers.tryParse(map.get().get("sheetId"));
+            Integer rowId = Numbers.tryParse(map.get().get("rowId"));
 
-                Integer sheetId = Numbers.tryParse(map.get().get("sheetId"));
-                Integer rowId = Numbers.tryParse(map.get().get("rowId"));
+            if (sheetId == null || rowId == null) {
+                System.err.println("Incorrect metadata information.");
+                return;
+            }
+            DateTimeFormatter timeFormat = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
 
-                if (sheetId == null || rowId == null) {
-                    System.err.println("Incorrect metadata information.");
-                    return;
-                }
-                DateTimeFormatter timeFormat = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
-
-                this.sheetsService.spreadsheets()
+            this.sheetsService.spreadsheets()
                     .batchUpdate(
-                        jwt.getSpreadsheetId(),
-                        new BatchUpdateSpreadsheetRequest().setRequests(
-                            Arrays.asList(
-                                new Request().setUpdateCells(
-                                    new UpdateCellsRequest()
-                                        .setStart(
-                                            new GridCoordinate().setSheetId(sheetId)
-                                                .setRowIndex(rowId)
-                                                .setColumnIndex(1)
-                                        )
-                                        .setRows(
-                                            rows(
-                                                row(
-                                                    cell(Numbers.tryParse(jwt.getValue())),
-                                                    cell(LocalDateTime.now(ZoneId.of("Z")).format(timeFormat))
-                                                )
+                            jwt.getSpreadsheetId(),
+                            new BatchUpdateSpreadsheetRequest().setRequests(
+                                    Arrays.asList(
+                                            new Request().setUpdateCells(
+                                                    new UpdateCellsRequest()
+                                                            .setStart(
+                                                                    new GridCoordinate().setSheetId(sheetId)
+                                                                            .setRowIndex(rowId)
+                                                                            .setColumnIndex(1)
+                                                            )
+                                                            .setRows(
+                                                                    rows(
+                                                                            row(
+                                                                                    cell(Numbers.tryParse(jwt.getValue())),
+                                                                                    cell(LocalDateTime.now(ZoneId.of("Z")).format(timeFormat))
+                                                                            )
+                                                                    )
+                                                            )
+                                                            .setFields("*")
                                             )
-                                        )
-                                        .setFields("*")
-                                )
+                                    )
                             )
-                        )
                     )
                     .execute();
 
-            } catch (IOException e) {
-                System.err.println("Could not get metadata for response id " + jwt.getResponseId());
-                e.printStackTrace();
-            }
-
+        } catch (IOException e) {
+            System.err.println("Could not get metadata for response id " + jwt.getResponseId());
+            e.printStackTrace();
         }
 
     }
+
 
     private static class EventHandler implements Consumer<Event> {
 
@@ -148,9 +136,9 @@ public class BattleBot {
 
                 event.getRecurringEventId();
                 surveys
-                    .stream()
-                    .map(survey -> new SurveySender(api, survey))
-                    .forEach(pool::submit);
+                        .stream()
+                        .map(survey -> new SurveySender(api, survey))
+                        .forEach(pool::submit);
 
             } catch (IOException e) {
                 System.err.println("Failed to start the feedback gathering process for event " + event.getId());
